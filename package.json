@@ -1,0 +1,25 @@
+{
+  "name": "diagrams-net-material-icons",
+  "version": "0.1.0",
+  "description": "Google's Material Design Icons for diagrams.net (formerly draw.io)",
+  "main": "src/create-libraries.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krchf/diagrams-net-material-icons.git"
+  },
+  "author": "github.com/krchf",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/krchf/diagrams-net-material-icons/issues"
+  },
+  "homepage": "https://github.com/krchf/diagrams-net-material-icons#readme",
+  "devDependencies": {
+    "@material-design-icons/scripts": "^0.2.4",
+    "@material-design-icons/svg": "^0.10.6",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.4.0"
+  }
+}

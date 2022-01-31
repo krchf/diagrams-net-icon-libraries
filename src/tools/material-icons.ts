@@ -1,9 +1,12 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { FileTree } from "../create-libraries";
+import { Collection } from "../create-libraries";
 
-// root of the SVG icon package
+/** root of the SVG icon package */
 const PACKAGE_ROOT = "node_modules/@material-design-icons/svg/";
+
+/** Default fill color of styled icons. */
+const DEFAULT_FILL_COLOR = "#000000";
 
 /** Represents metadata for a single Material Design Icon. */
 export interface MaterialIcon {
@@ -58,10 +61,10 @@ function computeFamilySlugs(families: string[]): { [family: string]: string } {
   return lookup;
 }
 
-/** Construct an icon mapping from the given metadata. */
-export function constructFileTree(metadata: MaterialIconsMetadata): FileTree {
+/** Constructs an icon collection from the given metadata. */
+export function constructFileTree(metadata: MaterialIconsMetadata): Collection {
   const familySlugs = computeFamilySlugs(metadata.families);
-  const tree: FileTree = {};
+  const tree: Collection = {};
   for (const family of metadata.families) {
     tree[familySlugs[family]] = {};
   }
@@ -88,4 +91,36 @@ export async function readVersion(): Promise<string> {
   const data = (await readFile(join(PACKAGE_ROOT, "package.json"))).toString();
   const packageInfo = JSON.parse(data);
   return packageInfo["version"];
+}
+
+/**
+ * Modifies an SVG to include styles.
+ *
+ * @param svgData Original SVG data. (Is modified while adding styles.)
+ * @returns Modified SVG data with added styles.
+ */
+export function createStyledSvg(svgData: string): string {
+  svgData = svgData.replace(
+    ">", // only replaces first occurence
+    `><style type="text/css">.icon { fill: ${DEFAULT_FILL_COLOR}; }</style>`
+  );
+
+  const svgShapes = [
+    "circle",
+    "ellipse",
+    "line",
+    "path",
+    "polygon",
+    "polyline",
+    "rect",
+  ];
+
+  for (const shape of svgShapes) {
+    svgData = svgData.replace(
+      new RegExp("<" + shape, "g"),
+      `<${shape} class="icon"`
+    );
+  }
+
+  return svgData;
 }

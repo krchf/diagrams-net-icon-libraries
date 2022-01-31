@@ -1,10 +1,9 @@
-import { mkdirSync, readFileSync, writeFileSync } from "fs";
+import { mkdirSync, writeFileSync } from "fs";
 import { dirname } from "path";
+import { deflateRaw } from "pako";
 
 /** Represents a diagrams.net icon. */
-export interface DiagramsNetIcon {
-  /** Base64-encoded SVG data. */
-  data: string;
+interface DiagramsNetBaseIcon {
   /** Icon width. */
   w: number;
   /** Icon height. */
@@ -15,15 +14,46 @@ export interface DiagramsNetIcon {
   aspect: "fixed";
 }
 
-/** Reads and converts the specified SVG icon to diagrams.net format. */
-export function convertIcon(
-  svgFilename: string,
+/** Represents a diagrams.net icon without styles. */
+interface DiagramsNetUnstyledIcon extends DiagramsNetBaseIcon {
+  /** Base64-encoded SVG data. */
+  data?: string;
+}
+
+/** Represents a diagrams.net icon with styles. */
+interface DiagramsNetStyledIcon extends DiagramsNetBaseIcon {
+  /** Encoded XML icon data. */
+  xml?: string;
+}
+
+/** Represents any diagrams.net icon type. */
+type DiagramsNetIcon = DiagramsNetUnstyledIcon | DiagramsNetStyledIcon;
+
+/**
+ * Converts an SVG-file into a diagrams.net styled icon.
+ *
+ * @param svgData Data of the original SVG.
+ * @param title Human-readable title of the icon.
+ * @returns Styled diagrams.net icon.
+ */
+export function convertSvgToStyledIcon(
+  svgData: string,
   title: string
-): DiagramsNetIcon {
+): DiagramsNetStyledIcon {
+  const svgBase64 = Buffer.from(svgData).toString("base64");
+
+  let xmlIconData = `<mxGraphModel><root><mxCell id="0"/><mxCell id="1" parent="0"/>`;
+  xmlIconData += `<mxCell id="2" value="" style="editableCssRules=.*;shape=image;verticalLabelPosition=bottom;verticalAlign=top;imageAspect=0;aspect=fixed;`;
+  xmlIconData += `image=data:image/svg+xml,${svgBase64}" `;
+  xmlIconData += `vertex="1" parent="1"><mxGeometry width="24" height="24" as="geometry"/></mxCell></root></mxGraphModel>`;
+
+  // see https://github.com/jgraph/drawio-tools/blob/master/tools/convert.html
+  const encodedXmlData = Buffer.from(
+    deflateRaw(encodeURIComponent(xmlIconData))
+  ).toString("base64");
+
   return {
-    data:
-      "data:image/svg+xml;base64," +
-      readFileSync(svgFilename).toString("base64"),
+    xml: encodedXmlData,
     w: 24,
     h: 24,
     title: title.replace(/_/g, " "),
@@ -31,7 +61,12 @@ export function convertIcon(
   };
 }
 
-/** Creates and saves the specified icons into a diagrams.net library at the given path. */
+/**
+ * Creates and saves the specified icons into a diagrams.net library at the given path.
+ *
+ * @param libraryFilename Filename where to save the file.
+ * @param icons Diagrams.net icons to include in the library.
+ */
 export function writeLibrary(
   libraryFilename: string,
   icons: DiagramsNetIcon[]

@@ -17,13 +17,13 @@
   },
   "homepage": "https://github.com/krchf/diagrams-net-material-icons#readme",
   "devDependencies": {
+    "prettier": "^2.5.1"
+  },
+  "dependencies": {
     "@material-design-icons/scripts": "^0.2.4",
     "@material-design-icons/svg": "^0.10.6",
     "@types/pako": "^1.0.3",
-    "prettier": "^2.5.1",
-    "ts-node": "^10.4.0"
-  },
-  "dependencies": {
+    "ts-node": "^10.4.0",
     "pako": "^2.0.4"
   }
 }

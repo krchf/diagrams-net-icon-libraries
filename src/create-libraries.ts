@@ -2,9 +2,9 @@ import { readFile, rm } from "fs/promises";
 import { join } from "path";
 import { convertSvgToStyledIcon, writeLibrary } from "./tools/diagrams-net";
 import {
-  constructFileTree,
+  parseCollection,
   createStyledSvg,
-  loadMetaData,
+  fetchMetadata,
   readVersion,
 } from "./tools/material-icons";
 
@@ -57,8 +57,13 @@ function capitalize(str: string): string {
 }
 
 (async () => {
+  // remove any old files
   await rm(OUT_DIR, { recursive: true, force: true });
-  const metadata = await loadMetaData("test/metadata.json");
-  const fileTree = constructFileTree(metadata);
-  createLibraries(fileTree);
+
+  // fetch metadata and create collection
+  const metadata = await fetchMetadata();
+  const collection = parseCollection(metadata);
+
+  // create diagrams.net libraries
+  createLibraries(collection);
 })();

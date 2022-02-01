@@ -1,6 +1,9 @@
 import { readFile } from "fs/promises";
+import { get } from "http";
 import { join } from "path";
 import { Collection } from "../create-libraries";
+
+// background information on styling: https://www.diagrams.net/doc/faq/svg-edit-colours
 
 /** root of the SVG icon package */
 const PACKAGE_ROOT = "node_modules/@material-design-icons/svg/";
@@ -32,13 +35,13 @@ export interface MaterialIconsMetadata {
   icons: MaterialIcon[];
 }
 
-/** Loads the metadata from the specified filename. */
-export async function loadMetaData(
-  metadataFilename: string
-): Promise<MaterialIconsMetadata> {
-  const buffer = await readFile(metadataFilename);
-  return JSON.parse(buffer.toString());
-}
+// /** Loads the metadata from the specified filename. */
+// export async function loadMetaData(
+//   metadataFilename: string
+// ): Promise<MaterialIconsMetadata> {
+//   const buffer = await readFile(metadataFilename);
+//   return JSON.parse(buffer.toString());
+// }
 
 /** Constructs the icon filename given the family slug. */
 function constructFilename(icon: MaterialIcon, familySlug: string): string {
@@ -62,7 +65,7 @@ function computeFamilySlugs(families: string[]): { [family: string]: string } {
 }
 
 /** Constructs an icon collection from the given metadata. */
-export function constructFileTree(metadata: MaterialIconsMetadata): Collection {
+export function parseCollection(metadata: MaterialIconsMetadata): Collection {
   const familySlugs = computeFamilySlugs(metadata.families);
   const tree: Collection = {};
   for (const family of metadata.families) {
@@ -123,4 +126,38 @@ export function createStyledSvg(svgData: string): string {
   }
 
   return svgData;
+}
+
+/** Fetches the metadata for Material Design Icons from fonts.google.com. */
+export function fetchMetadata(): Promise<MaterialIconsMetadata> {
+  return new Promise((resolve, reject) => {
+    get("http://fonts.google.com/metadata/icons", (res) => {
+      const { statusCode } = res;
+
+      if (statusCode !== 200) {
+        reject(
+          new Error(`Unable to fetch metadata JSON! (status: ${statusCode})`)
+        );
+      } else {
+        res.setEncoding("utf8");
+        let rawData = "";
+        res.on("data", (chunk) => {
+          rawData += chunk;
+        });
+        res.on("end", () => {
+          try {
+            // handle bug where metadata starts with ")]}'"
+            const parsedData = JSON.parse(rawData.slice(rawData.indexOf("{")));
+            resolve(parsedData);
+          } catch (e) {
+            reject(
+              new Error(
+                `Unable to parse metadata JSON! ${(e as Error).message || e}`
+              )
+            );
+          }
+        });
+      }
+    });
+  });
 }

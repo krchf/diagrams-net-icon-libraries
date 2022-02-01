@@ -57,8 +57,13 @@ function capitalize(str: string): string {
 }
 
 (async () => {
+  // remove any old files
   await rm(OUT_DIR, { recursive: true, force: true });
+
+  // fetch metadata and create collection
   const metadata = await fetchMetadata();
-  const fileTree = parseCollection(metadata);
-  createLibraries(fileTree);
+  const collection = parseCollection(metadata);
+
+  // create diagrams.net libraries
+  createLibraries(collection);
 })();

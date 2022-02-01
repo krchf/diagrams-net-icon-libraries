@@ -1,0 +1,21 @@
+name: main-PR
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  create-libraries:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install Dependencies
+        run: npm ci
+      
+      - name: Create Libraries
+        run: npm run create-libraries

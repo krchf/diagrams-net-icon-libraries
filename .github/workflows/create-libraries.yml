@@ -1,6 +1,8 @@
-name: main-PR
+name: create-libraries
 
 on:
+  push:
+    tags: ['*']
   pull_request:
     branches: [ main ]
 
@@ -19,3 +21,9 @@ jobs:
       
       - name: Create Libraries
         run: npm run create-libraries
+
+      - name: Release (if tag)
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: dist/icon-libraries/**/*.xml

@@ -158,8 +158,11 @@ function generateInstructionsMarkdown(collections: IconCollection[]): string {
   }
 
   // generate instructions
+  console.log("Writing instructions ...");
   await writeFile(
     join(OUT_DIR, "README.md"),
     generateInstructionsMarkdown(collections)
   );
+
+  console.log("Done!");
 })();

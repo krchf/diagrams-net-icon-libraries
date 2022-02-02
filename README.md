@@ -8,7 +8,7 @@ _Makes Google's Material Design Icons available in diagrams.net (formerly draw.i
 
 ## Usage
 
-Users of https://app.diagrams.net/ can follow the [instructions in `dist/README.md`](https://github.com/krchf/diagrams-net-icon-libraries/tree/main/dist/icon-libraries/README.md) to add the libraries with a single click.
+Users of https://app.diagrams.net/ can follow the [instructions in `dist/icon-libraries/README.md`](https://github.com/krchf/diagrams-net-icon-libraries/tree/main/dist/icon-libraries/README.md) to add the libraries with a single click.
 
 Users of the diagrams.net/draw.io desktop app: Navigate to the [`dist/icon-libraries/Material-Icons` folder](https://github.com/krchf/diagrams-net-icon-libraries/tree/main/dist/icon-libraries/Material-Icons), download the libraries for the families and categories you need and import them in the desktop app via `File > Open Library ...`.
 

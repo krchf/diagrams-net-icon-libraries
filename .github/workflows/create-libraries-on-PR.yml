@@ -1,4 +1,4 @@
-name: main-PR
+name: Create Libraries on PR
 
 on:
   pull_request:
@@ -19,3 +19,9 @@ jobs:
       
       - name: Create Libraries
         run: npm run create-libraries
+
+      - name: Push Libraries
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "[Automation] Add generated libraries"
+          file_pattern: dist/icon-libraries/**/*.xml

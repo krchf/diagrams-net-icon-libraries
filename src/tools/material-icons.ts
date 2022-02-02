@@ -1,15 +1,11 @@
 import { readFile } from "fs/promises";
 import { get } from "http";
 import { join } from "path";
-import { Collection } from "../create-libraries";
-
-// background information on styling: https://www.diagrams.net/doc/faq/svg-edit-colours
+import { IconCollection, IconLoaderFn } from "../create-libraries";
+import { createStyledSvg } from "./svg-styling";
 
 /** root of the SVG icon package */
 const PACKAGE_ROOT = "node_modules/@material-design-icons/svg/";
-
-/** Default fill color of styled icons. */
-const DEFAULT_FILL_COLOR = "#000000";
 
 /** Represents metadata for a single Material Design Icon. */
 export interface MaterialIcon {
@@ -35,20 +31,22 @@ export interface MaterialIconsMetadata {
   icons: MaterialIcon[];
 }
 
-// /** Loads the metadata from the specified filename. */
-// export async function loadMetaData(
-//   metadataFilename: string
-// ): Promise<MaterialIconsMetadata> {
-//   const buffer = await readFile(metadataFilename);
-//   return JSON.parse(buffer.toString());
-// }
+/** Loader function for Material Design Icons applying style modifications. (Does not need category parameter.) */
+const loadMaterialIcon: IconLoaderFn = async (family, _, iconName) => {
+  const filename = join(PACKAGE_ROOT, family, `${iconName}.svg`);
+  const originalIconData = (await readFile(filename)).toString();
+  const styledIconData = createStyledSvg(originalIconData);
 
-/** Constructs the icon filename given the family slug. */
-function constructFilename(icon: MaterialIcon, familySlug: string): string {
-  return join(PACKAGE_ROOT, familySlug, `${icon.name}.svg`);
-}
+  return styledIconData;
+};
 
-/** Computes a lookup object mapping original family names to slugs. */
+/**
+ * Computes a lookup object mapping original family names to slugs (= abbreviations)
+ * compatible with the @material-design-icons/svg package.
+ *
+ * @param families List of families.
+ * @returns Mapping from original family name to slug.
+ */
 function computeFamilySlugs(families: string[]): { [family: string]: string } {
   const lookup: { [family: string]: string } = {};
 
@@ -64,68 +62,41 @@ function computeFamilySlugs(families: string[]): { [family: string]: string } {
   return lookup;
 }
 
-/** Constructs an icon collection from the given metadata. */
-export function parseCollection(metadata: MaterialIconsMetadata): Collection {
+/** Fetches metadata for Material Design Icons and constructs an icon collection based on it. */
+export async function parseMaterialDesignIconCollection(): Promise<IconCollection> {
+  const metadata = await fetchMetadata();
   const familySlugs = computeFamilySlugs(metadata.families);
-  const tree: Collection = {};
-  for (const family of metadata.families) {
-    tree[familySlugs[family]] = {};
-  }
+  const collection: IconCollection = {
+    name: "MD Icons",
+    version: await readVersion(),
+    loaderFn: loadMaterialIcon,
+    icons: {},
+  };
 
   for (const family of metadata.families) {
     const familySlug = familySlugs[family];
+    collection.icons[familySlug] = {};
+
     for (const icon of metadata.icons) {
       for (const category of icon.categories) {
         if (!icon.unsupported_families.includes(family)) {
-          tree[familySlug][category] = {
-            ...(tree[familySlug][category] || {}),
-            [icon.name]: constructFilename(icon, familySlug),
-          };
+          collection.icons[familySlug][category] = [
+            ...(collection.icons[familySlug][category] || []),
+            icon.name,
+          ];
         }
       }
     }
   }
 
-  return tree;
+  return collection;
 }
 
-/** Reads the current version from the SVG icon package. */
+/** Reads the current version from the @material-design-icons/svg package. */
 export async function readVersion(): Promise<string> {
   const data = (await readFile(join(PACKAGE_ROOT, "package.json"))).toString();
   const packageInfo = JSON.parse(data);
   return packageInfo["version"];
-}
-
-/**
- * Modifies an SVG to include styles.
- *
- * @param svgData Original SVG data. (Is modified while adding styles.)
- * @returns Modified SVG data with added styles.
- */
-export function createStyledSvg(svgData: string): string {
-  svgData = svgData.replace(
-    ">", // only replaces first occurence
-    `><style type="text/css">.icon { fill: ${DEFAULT_FILL_COLOR}; }</style>`
-  );
-
-  const svgShapes = [
-    "circle",
-    "ellipse",
-    "line",
-    "path",
-    "polygon",
-    "polyline",
-    "rect",
-  ];
-
-  for (const shape of svgShapes) {
-    svgData = svgData.replace(
-      new RegExp("<" + shape, "g"),
-      `<${shape} class="icon"`
-    );
-  }
-
-  return svgData;
 }
 
 /** Fetches the metadata for Material Design Icons from fonts.google.com. */

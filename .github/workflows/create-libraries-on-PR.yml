@@ -25,3 +25,6 @@ jobs:
         with:
           commit_message: "[Automation] Add generated libraries"
           file_pattern: dist/icon-libraries/**/*.*
+
+      - name: Debug
+        run: cat dist/icon-libraries/README.md

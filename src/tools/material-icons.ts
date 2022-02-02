@@ -67,7 +67,7 @@ export async function parseMaterialDesignIconCollection(): Promise<IconCollectio
   const metadata = await fetchMetadata();
   const familySlugs = computeFamilySlugs(metadata.families);
   const collection: IconCollection = {
-    name: "MD Icons",
+    name: "MD-Icons",
     version: await readVersion(),
     loaderFn: loadMaterialIcon,
     icons: {},

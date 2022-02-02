@@ -50,9 +50,9 @@ async function createLibraries(collection: IconCollection) {
         libraryIcons.push(convertSvgToStyledIcon(svgData, iconName));
       }
 
-      const libraryFilename = `${collection.name} - ${capitalize(
+      const libraryFilename = `${collection.name}-${capitalize(
         family
-      )} - ${capitalize(category)} (${collection.version}).xml`;
+      )}-${capitalize(category)}.xml`;
 
       writeDiagramsNetLibrary(
         join(OUT_DIR, collection.name, family, libraryFilename),

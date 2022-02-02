@@ -1,8 +1,12 @@
 import { readFile } from "fs/promises";
 import { get } from "http";
 import { join } from "path";
-import { IconCollection, IconLoaderFn } from "../create-libraries";
-import { createStyledSvg } from "./svg-styling";
+import {
+  CollectionLoaderFn,
+  IconCollection,
+  IconLoaderFn,
+} from "../create-libraries";
+import { createStyledSvg } from "../tools/svg-styling";
 
 /** root of the SVG icon package */
 const PACKAGE_ROOT = "node_modules/@material-design-icons/svg/";
@@ -63,34 +67,41 @@ function computeFamilySlugs(families: string[]): { [family: string]: string } {
 }
 
 /** Fetches metadata for Material Design Icons and constructs an icon collection based on it. */
-export async function parseMaterialDesignIconCollection(): Promise<IconCollection> {
-  const metadata = await fetchMetadata();
-  const familySlugs = computeFamilySlugs(metadata.families);
-  const collection: IconCollection = {
-    name: "MD-Icons",
-    version: await readVersion(),
-    loaderFn: loadMaterialIcon,
-    icons: {},
-  };
+export const parseMaterialDesignIconCollection: CollectionLoaderFn =
+  async (): Promise<IconCollection> => {
+    const metadata = await fetchMetadata();
+    const familySlugs = computeFamilySlugs(metadata.families);
+    const collection: IconCollection = {
+      name: "Material-Icons",
+      version: await readVersion(),
+      loaderFn: loadMaterialIcon,
+      license: {
+        name: "Apache License Version 2.0",
+        summary:
+          "We have made these icons available for you to incorporate into your products under the Apache License Version 2.0. Feel free to remix and re-share these icons and documentation in your products. We'd love attribution in your app's about screen, but it's not required.",
+        source: "https://github.com/google/material-design-icons",
+      },
+      icons: {},
+    };
 
-  for (const family of metadata.families) {
-    const familySlug = familySlugs[family];
-    collection.icons[familySlug] = {};
+    for (const family of metadata.families) {
+      const familySlug = familySlugs[family];
+      collection.icons[familySlug] = {};
 
-    for (const icon of metadata.icons) {
-      for (const category of icon.categories) {
-        if (!icon.unsupported_families.includes(family)) {
-          collection.icons[familySlug][category] = [
-            ...(collection.icons[familySlug][category] || []),
-            icon.name,
-          ];
+      for (const icon of metadata.icons) {
+        for (const category of icon.categories) {
+          if (!icon.unsupported_families.includes(family)) {
+            collection.icons[familySlug][category] = [
+              ...(collection.icons[familySlug][category] || []),
+              icon.name,
+            ];
+          }
         }
       }
     }
-  }
 
-  return collection;
-}
+    return collection;
+  };
 
 /** Reads the current version from the @material-design-icons/svg package. */
 export async function readVersion(): Promise<string> {

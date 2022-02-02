@@ -56,7 +56,7 @@ export function convertSvgToStyledIcon(
     xml: encodedXmlData,
     w: 24,
     h: 24,
-    title: title.replace(/_/g, " "),
+    title,
     aspect: "fixed",
   };
 }
@@ -67,7 +67,7 @@ export function convertSvgToStyledIcon(
  * @param libraryFilename Filename where to save the file.
  * @param icons Diagrams.net icons to include in the library.
  */
-export function writeLibrary(
+export function writeDiagramsNetLibrary(
   libraryFilename: string,
   icons: DiagramsNetIcon[]
 ): void {

@@ -1,6 +1,6 @@
 import { mkdirSync, writeFileSync } from "fs";
 import { dirname } from "path";
-import { deflateRaw } from "pako";
+import { deflateRawSync } from "zlib";
 
 /** Represents a diagrams.net icon. */
 interface DiagramsNetBaseIcon {
@@ -48,8 +48,8 @@ export function convertSvgToStyledIcon(
   xmlIconData += `vertex="1" parent="1"><mxGeometry width="24" height="24" as="geometry"/></mxCell></root></mxGraphModel>`;
 
   // see https://github.com/jgraph/drawio-tools/blob/master/tools/convert.html
-  const encodedXmlData = Buffer.from(
-    deflateRaw(encodeURIComponent(xmlIconData))
+  const encodedXmlData = deflateRawSync(
+    encodeURIComponent(xmlIconData)
   ).toString("base64");
 
   return {

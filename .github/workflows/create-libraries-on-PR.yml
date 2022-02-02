@@ -24,4 +24,4 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "[Automation] Add generated libraries"
-          file_pattern: dist/icon-libraries/**/*.*
+          file_pattern: dist/icon-libraries/

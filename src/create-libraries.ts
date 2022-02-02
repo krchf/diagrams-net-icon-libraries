@@ -9,7 +9,7 @@ import {
 } from "./tools/material-icons";
 
 // destination directory for libraries
-const OUT_DIR = "icon-libraries";
+const OUT_DIR = "dist/icon-libraries";
 
 /** Represents an icon collection as as mapping from family to categories to icons to filename. */
 export interface Collection {

@@ -74,6 +74,8 @@ export const parseMaterialDesignIconCollection: CollectionLoaderFn =
     const collection: IconCollection = {
       name: "Material-Icons",
       version: await readVersion(),
+      website: "https://fonts.google.com/icons",
+      author: { name: "Google" },
       loaderFn: loadMaterialIcon,
       license: {
         name: "Apache License Version 2.0",

@@ -1,4 +1,4 @@
-import { rm, writeFile } from "fs/promises";
+import { mkdir, rm, writeFile } from "fs/promises";
 import { join } from "path";
 import {
   convertSvgToStyledIcon,
@@ -8,6 +8,10 @@ import { parseMaterialDesignIconCollection } from "./icon-collections/material-i
 
 // destination directory for libraries
 const OUT_DIR = "dist/icon-libraries";
+
+// URL for library download
+const DOWNLOAD_BASE_URL =
+  "https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main";
 
 // all loaders for icon collections
 const collectionLoaders: CollectionLoaderFn[] = [
@@ -31,6 +35,18 @@ export interface IconCollection {
 
   /** Function to load icons from disk. */
   loaderFn: IconLoaderFn;
+
+  /** URL with further information about icon collection. */
+  website: string;
+
+  /** Website of collection creator. */
+  author: {
+    /** Display name. */
+    name: string;
+
+    /** Optional link to creator's website. */
+    website?: string;
+  };
 
   /** Information regarding licensing */
   license: {
@@ -113,30 +129,44 @@ function deriveLibraryFilename(
  * @returns Markdown string with instructions.
  */
 function generateInstructionsMarkdown(collections: IconCollection[]): string {
-  let md = `# Add Google's Material Icons to https://app.diagrams.net\n\n`;
-  md += `> Disclaimer: This project is not affiliated with _Material Design Icons_ by Google or _diagrams.net_ (formerly _draw.io_) by JGraph!\n\n`;
-  md += `**Click one of the links below to add the icon library to https://app.diagrams.net**\n\n`;
+  let md = `# Icon libraries for diagrams.net/draw.io\n\n`;
+  md += `> Disclaimer: This project is not affiliated with JGraph or any icon creator such as Google!\n\n`;
+  md += `_Last updated: ${new Date().toUTCString()}_\n\n\n`;
+  md +=
+    "Users of https://app.diagrams.net can add the libraries with a single click. Users of the desktop app need to download the library and import it via `File > Open Library`.\n";
 
   for (const collection of collections) {
     md += `## ${collection.name}\n\n`;
-    md += `License: ${collection.license.name}\n\n`;
+    md += "| Overview | |\n|-|-|\n";
+    md += `| Version | ${collection.version} |\n`;
+    md += `| Author | [${collection.author.name}](${
+      collection.author.website || collection.website
+    }) |\n`;
+    md += `| Families | ${Object.keys(collection.icons)
+      .map((family) => `[${capitalize(family)}](#${family})`)
+      .join(", ")} |\n`;
+    md += `| Website | [${collection.website}](${collection.website}) |\n`;
+    md += `| License | ${collection.license.name} |\n`;
     md += `> ${collection.license.summary}\n`;
     md += `>\n> -- _${collection.license.source}_`;
 
     for (const [family, categoriesObj] of Object.entries(collection.icons)) {
-      md += `\n\n ### ${capitalize(family)}\n\n`;
+      md += `\n\n ### ${capitalize(family)}\n`;
       for (const category of Object.keys(categoriesObj).sort()) {
-        md += `- [${capitalize(
+        const fileUrl = `${DOWNLOAD_BASE_URL}/dist/icon-libraries/${
+          collection.name
+        }/${family}/${deriveLibraryFilename(
+          collection.name,
+          family,
           category
-        )}](https://app.diagrams.net/?splash=0&clibs=U${encodeURI(
-          `https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/${
-            collection.name
-          }/${family}/${deriveLibraryFilename(
-            collection.name,
-            family,
-            category
-          )})`
-        )} (${collection.icons[family][category].length} icons)\n`;
+        )}`;
+        md += `- ${capitalize(category)} (${
+          collection.icons[family][category].length
+        } icons) `;
+        md += `[ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=U${encodeURI(
+          fileUrl
+        )})\n`;
+        md += `| [Download for desktop app](${fileUrl}) ]\n`;
       }
     }
   }
@@ -147,6 +177,7 @@ function generateInstructionsMarkdown(collections: IconCollection[]): string {
 (async () => {
   // remove any old files
   await rm(OUT_DIR, { recursive: true, force: true });
+  await mkdir(OUT_DIR, { recursive: true });
 
   const collections: IconCollection[] = [];
 

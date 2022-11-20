@@ -38,10 +38,18 @@ export interface MaterialIconsMetadata {
 /** Loader function for Material Design Icons applying style modifications. (Does not need category parameter.) */
 const loadMaterialIcon: IconLoaderFn = async (family, _, iconName) => {
   const filename = join(PACKAGE_ROOT, family, `${iconName}.svg`);
-  const originalIconData = (await readFile(filename)).toString();
-  const styledIconData = createStyledSvg(originalIconData);
 
-  return styledIconData;
+  try {
+    const originalIconData = (await readFile(filename)).toString();
+    const styledIconData = createStyledSvg(originalIconData);
+    return styledIconData;
+  } catch (err) {
+    console.error(
+      "Error while loading and styling icon:",
+      (err as Error).message
+    );
+    return;
+  }
 };
 
 /**

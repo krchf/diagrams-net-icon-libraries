@@ -23,7 +23,7 @@ export type IconLoaderFn = (
   family: string,
   category: string,
   iconName: string
-) => Promise<string>;
+) => Promise<string | undefined>;
 
 /** Internal representation of an icon collection. */
 export interface IconCollection {
@@ -66,12 +66,25 @@ export interface IconCollection {
   };
 }
 
+/** Contains statistics collected during creation of libraries. */
+interface LibraryCreationStatistics {
+  icons: {
+    /** Number of successfully processed icons. */
+    success: number;
+    /** Number of  icons with error during processing. */
+    error: number;
+  };
+}
+
 /** Represents a function which returns an icon collection. */
 export type CollectionLoaderFn = () => Promise<IconCollection>;
 
 /** Creates a library for each (family,category)-combination from the specified collection. */
-async function createLibraries(collection: IconCollection) {
+async function createLibraries(
+  collection: IconCollection
+): Promise<LibraryCreationStatistics> {
   console.log("Handling", collection.name, collection.version);
+  const stats: LibraryCreationStatistics = { icons: { success: 0, error: 0 } };
 
   for (const [family, categoriesObj] of Object.entries(collection.icons)) {
     console.log("Handling family", family);
@@ -81,7 +94,15 @@ async function createLibraries(collection: IconCollection) {
 
       for (const iconName of icons) {
         const svgData = await collection.loaderFn(family, category, iconName);
-        libraryIcons.push(convertSvgToStyledIcon(svgData, iconName));
+        if (svgData) {
+          libraryIcons.push(convertSvgToStyledIcon(svgData, iconName));
+          stats.icons.success += 1;
+        } else {
+          console.warn(
+            `Undefined data for icon ${iconName} (from family "${family}", category "${category}")`
+          );
+          stats.icons.error += 1;
+        }
       }
 
       const libraryFilename = deriveLibraryFilename(
@@ -96,6 +117,8 @@ async function createLibraries(collection: IconCollection) {
       );
     }
   }
+
+  return stats;
 }
 
 /** Capitalizes a string considering hyphenation. */
@@ -185,7 +208,10 @@ function generateInstructionsMarkdown(collections: IconCollection[]): string {
     // create collection and diagrams.net libraries
     const collection = await loadCollection();
     collections.push(collection);
-    await createLibraries(collection);
+    const stats = await createLibraries(collection);
+    console.log(
+      `Finished processing of collection ${collection.name} (${stats.icons.success} icons processed successfully, ${stats.icons.error} icons processed with error)`
+    );
   }
 
   // generate instructions

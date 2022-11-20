@@ -2,6 +2,7 @@ import { readFile } from "fs/promises";
 import { get } from "http";
 import { join } from "path";
 import {
+  allCategory,
   CollectionLoaderFn,
   IconCollection,
   IconLoaderFn,
@@ -96,13 +97,19 @@ export const parseMaterialDesignIconCollection: CollectionLoaderFn =
 
     for (const family of metadata.families) {
       const familySlug = familySlugs[family];
-      collection.icons[familySlug] = {};
+      collection.icons[familySlug] = {
+        [allCategory]: [],
+      };
 
       for (const icon of metadata.icons) {
         for (const category of icon.categories) {
           if (!icon.unsupported_families.includes(family)) {
             collection.icons[familySlug][category] = [
               ...(collection.icons[familySlug][category] || []),
+              icon.name,
+            ];
+            collection.icons[familySlug][allCategory] = [
+              ...collection.icons[familySlug][allCategory],
               icon.name,
             ];
           }

@@ -2,7 +2,7 @@
 
 > Disclaimer: This project is not affiliated with JGraph or any icon creator such as Google!
 
-_Last updated: Sun, 20 Nov 2022 17:40:52 GMT_
+_Last updated: Sun, 20 Nov 2022 18:20:08 GMT_
 
 
 Users of https://app.diagrams.net can add the libraries with a single click. Users of the desktop app need to download the library and import it via `File > Open Library`.
@@ -20,6 +20,8 @@ Users of https://app.diagrams.net can add the libraries with a single click. Use
 > -- _https://github.com/google/material-design-icons_
 
  ### Filled
+- _**All Icons**_ (2122 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/filled/Material-Icons-Filled-All.xml)
+| [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/filled/Material-Icons-Filled-All.xml) ]
 - Action (453 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/filled/Material-Icons-Filled-Action.xml)
 | [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/filled/Material-Icons-Filled-Action.xml) ]
 - Alert (7 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/filled/Material-Icons-Filled-Alert.xml)
@@ -59,6 +61,8 @@ Users of https://app.diagrams.net can add the libraries with a single click. Use
 
 
  ### Outlined
+- _**All Icons**_ (2122 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/outlined/Material-Icons-Outlined-All.xml)
+| [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/outlined/Material-Icons-Outlined-All.xml) ]
 - Action (453 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/outlined/Material-Icons-Outlined-Action.xml)
 | [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/outlined/Material-Icons-Outlined-Action.xml) ]
 - Alert (7 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/outlined/Material-Icons-Outlined-Alert.xml)
@@ -98,6 +102,8 @@ Users of https://app.diagrams.net can add the libraries with a single click. Use
 
 
  ### Round
+- _**All Icons**_ (2122 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/round/Material-Icons-Round-All.xml)
+| [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/round/Material-Icons-Round-All.xml) ]
 - Action (453 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/round/Material-Icons-Round-Action.xml)
 | [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/round/Material-Icons-Round-Action.xml) ]
 - Alert (7 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/round/Material-Icons-Round-Alert.xml)
@@ -137,6 +143,8 @@ Users of https://app.diagrams.net can add the libraries with a single click. Use
 
 
  ### Sharp
+- _**All Icons**_ (2122 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/sharp/Material-Icons-Sharp-All.xml)
+| [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/sharp/Material-Icons-Sharp-All.xml) ]
 - Action (453 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/sharp/Material-Icons-Sharp-Action.xml)
 | [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/sharp/Material-Icons-Sharp-Action.xml) ]
 - Alert (7 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/sharp/Material-Icons-Sharp-Alert.xml)
@@ -176,6 +184,8 @@ Users of https://app.diagrams.net can add the libraries with a single click. Use
 
 
  ### TwoTone
+- _**All Icons**_ (2122 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/two-tone/Material-Icons-TwoTone-All.xml)
+| [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/two-tone/Material-Icons-TwoTone-All.xml) ]
 - Action (453 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/two-tone/Material-Icons-TwoTone-Action.xml)
 | [Download for desktop app](https://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/two-tone/Material-Icons-TwoTone-Action.xml) ]
 - Alert (7 icons) [ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=Uhttps://raw.githubusercontent.com/krchf/diagrams-net-icon-libraries/main/dist/icon-libraries/Material-Icons/two-tone/Material-Icons-TwoTone-Alert.xml)

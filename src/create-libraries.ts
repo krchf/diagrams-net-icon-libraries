@@ -79,6 +79,9 @@ interface LibraryCreationStatistics {
 /** Represents a function which returns an icon collection. */
 export type CollectionLoaderFn = () => Promise<IconCollection>;
 
+/** Category name of category holding all icons for a family. */
+export const allCategory = "all";
+
 /** Creates a library for each (family,category)-combination from the specified collection. */
 async function createLibraries(
   collection: IconCollection
@@ -129,6 +132,16 @@ function capitalize(str: string): string {
     .join("");
 }
 
+/** Formats a category name using Markdown. */
+function formatCategoryName(str: string): string {
+  const cap = capitalize(str);
+  if (cap === capitalize(allCategory)) {
+    return "_**All Icons**_";
+  }
+
+  return cap;
+}
+
 /**
  * Derives the filename of a library.
  *
@@ -175,7 +188,22 @@ function generateInstructionsMarkdown(collections: IconCollection[]): string {
 
     for (const [family, categoriesObj] of Object.entries(collection.icons)) {
       md += `\n\n ### ${capitalize(family)}\n`;
-      for (const category of Object.keys(categoriesObj).sort()) {
+      let sortedCategories = Object.keys(categoriesObj).sort();
+
+      // move "all" category to the first position
+      const allCategoryIndex = sortedCategories.findIndex(
+        (c) => c === allCategory
+      );
+      sortedCategories = [
+        sortedCategories[allCategoryIndex],
+        ...sortedCategories.slice(0, allCategoryIndex),
+        ...sortedCategories.slice(
+          allCategoryIndex + 1,
+          sortedCategories.length
+        ),
+      ];
+
+      for (const category of sortedCategories) {
         const fileUrl = `${DOWNLOAD_BASE_URL}/dist/icon-libraries/${
           collection.name
         }/${family}/${deriveLibraryFilename(
@@ -183,7 +211,7 @@ function generateInstructionsMarkdown(collections: IconCollection[]): string {
           family,
           category
         )}`;
-        md += `- ${capitalize(category)} (${
+        md += `- ${formatCategoryName(category)} (${
           collection.icons[family][category].length
         } icons) `;
         md += `[ [Add to app.diagrams.net](https://app.diagrams.net/?splash=0&clibs=U${encodeURI(
@@ -210,7 +238,12 @@ function generateInstructionsMarkdown(collections: IconCollection[]): string {
     collections.push(collection);
     const stats = await createLibraries(collection);
     console.log(
-      `Finished processing of collection ${collection.name} (${stats.icons.success} icons processed successfully, ${stats.icons.error} icons processed with error)`
+      // stats divided by two due to double-processing because of "all"-category
+      `Finished processing of collection ${collection.name} (${
+        stats.icons.success / 2
+      } icons processed successfully, ${
+        stats.icons.error / 2
+      } icons processed with error)`
     );
   }
 

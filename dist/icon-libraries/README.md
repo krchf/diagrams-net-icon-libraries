@@ -2,7 +2,7 @@
 
 > Disclaimer: This project is not affiliated with JGraph or any icon creator such as Google!
 
-_Last updated: Sun, 20 Nov 2022 18:20:08 GMT_
+_Last updated: Mon, 21 Nov 2022 06:29:15 GMT_
 
 
 Users of https://app.diagrams.net can add the libraries with a single click. Users of the desktop app need to download the library and import it via `File > Open Library`.

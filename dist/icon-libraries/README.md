@@ -2,7 +2,7 @@
 
 > Disclaimer: This project is not affiliated with JGraph or any icon creator such as Google!
 
-_Last updated: Fri, 21 Jul 2023 19:32:23 GMT_
+_Last updated: Fri, 18 Aug 2023 06:08:29 GMT_
 
 
 Users of https://app.diagrams.net can add the libraries with a single click. Users of the desktop app need to download the library and import it via `File > Open Library`.
@@ -10,7 +10,7 @@ Users of https://app.diagrams.net can add the libraries with a single click. Use
 
 | Overview | |
 |-|-|
-| Version | 0.14.2 |
+| Version | 0.14.10 |
 | Author | [Google](https://fonts.google.com/icons) |
 | Families | [Filled](#filled), [Outlined](#outlined), [Round](#round), [Sharp](#sharp), [TwoTone](#two-tone) |
 | Website | [https://fonts.google.com/icons](https://fonts.google.com/icons) |
